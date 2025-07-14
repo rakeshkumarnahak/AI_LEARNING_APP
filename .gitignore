@@ -1,0 +1,59 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Django migrations (optional)
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Environment variables
+.env
+
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Database files
+*.sqlite3
+*.db
+
+# Media files (if generated locally)
+media/
+staticfiles/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Coverage reports
+htmlcov/
+coverage.xml
+.cache
+.tox/
+
+# Docker-related
+.dockerignore
+docker-compose.override.yml
+
+# GitHub workflow temp files
+.github/workflows/*.backup.*
