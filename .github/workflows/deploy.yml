@@ -46,6 +46,7 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Build, tag, and push image to ECR
+        id: build-image
         env:
           ECR_REGISTRY: ${{ secrets.AWS_ECR_REGISTRY }}
           ECR_REPOSITORY: ai-learning-app
@@ -56,9 +57,16 @@ jobs:
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Deploy to AWS App Runner
+        id: deploy-apprunner
         uses: awslabs/amazon-app-runner-deploy@main
         with:
           service: app-runner-git-deploy-service
-          image-repository-type: ECR
-          image-identifier: ${{ secrets.AWS_ECR_REGISTRY }}/ai-learning-app:${{ github.sha }}
+          image: ${{ steps.build-image.outputs.image }}
           access-role-arn: ${{ secrets.AWS_APP_RUNNER_ROLE }}
+          region: ${{ env.AWS_REGION }}
+          cpu: 1
+          memory: 2
+          wait-for-service-stability-seconds: 300
+
+      - name: App Runner URL
+        run: echo "App runner URL ${{ steps.deploy-apprunner.outputs.service-url }}" 
