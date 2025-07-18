@@ -46,11 +46,12 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
       - name: Deploy to AWS App Runner
-        uses: aws-actions/aws-apprunner-deploy@v1
+        uses: awslabs/amazon-app-runner-deploy@main
         with:
-          service-name: ai-learning-app-service
+          service: app-runner-git-deploy-service
           image-repository-type: ECR
           image-identifier: ${{ secrets.AWS_ECR_REGISTRY }}/ai-learning-app:${{ github.sha }}
           access-role-arn: ${{ secrets.AWS_APP_RUNNER_ROLE }}
